@@ -1,0 +1,164 @@
+html {
+  font-family: "Zain", sans-serif;
+  font-size: 14pt;
+}
+
+body {
+    background: #faf6ec;
+    color: #333333;
+    margin-top: 7rem;
+    font-family: inherit;
+}
+  
+h1, h2, h3, h4, h5, h6 {
+  color: #1a4236;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  width: 100%;
+  background-image: linear-gradient(to right bottom, #1a4236, #96d6c3);
+  box-shadow: #3f3e3e 0 0 10px;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #e2e1e1;
+  font-weight: bold;
+  font-size: 18pt;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+@media (max-width: 991) {
+  .nav-item .nav-link{text-align: center;}
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px #3f3e3e;
+}
+
+.preview-section {
+  display: block;
+  max-height: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  margin-bottom: 3px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+  display: block;
+  margin-top: -10px;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #522e0cdc;
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+/* my profile setting */
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
+/* import font family */
+.zain-extralight {
+  font-family: "Zain", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.zain-light {
+  font-family: "Zain", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.zain-regular {
+  font-family: "Zain", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.zain-bold {
+  font-family: "Zain", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.zain-extrabold {
+  font-family: "Zain", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.zain-black {
+  font-family: "Zain", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.zain-light-italic {
+  font-family: "Zain", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.zain-regular-italic {
+  font-family: "Zain", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
