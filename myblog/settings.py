@@ -89,12 +89,12 @@ WSGI_APPLICATION = "myblog.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+tmpPostgres = urlparse(os.environ["DATABASE_URL"])
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',
+        'NAME': tmpPostgres.path.replace('/', ''),
         'USER': tmpPostgres.username,
         'PASSWORD': tmpPostgres.password,
         'HOST': tmpPostgres.hostname,
