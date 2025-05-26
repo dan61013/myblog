@@ -139,8 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Backblaze B2 S3-Compatible Storage settings
 AWS_ACCESS_KEY_ID = os.environ['B2_ACCESS_KEY']
@@ -155,19 +155,12 @@ AWS_S3_PARAMETERS = {
     'x-amz-content-sha256': 'UNSIGNED-PAYLOAD'
 }
 
-AWS_LOCATION = 'static'
-MEDIAFILES_LOCATION = 'media'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # 如果有媒體檔案，也要設定
 
-if AWS_S3_ENDPOINT_URL and AWS_STORAGE_BUCKET_NAME:
-    STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/"
-    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{MEDIAFILES_LOCATION}/"
-else:
-    STATIC_URL = "/static/"
-    MEDIA_URL = '/media/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
