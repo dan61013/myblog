@@ -14,7 +14,6 @@ import os
 from pathlib import Path
 import dotenv
 from urllib.parse import urlparse
-from botocore.client import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,15 +88,15 @@ WSGI_APPLICATION = "myblog.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-tmpPostgres = urlparse(os.environ["DATABASE_URL"])
+# tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
+        'NAME': os.environ["NEON_NAME"],
+        'USER': os.environ["NEON_USER"],
+        'PASSWORD': os.environ["NEON_PASSWORD"],
+        'HOST': os.environ["NEOD_HOST"],
         'PORT': 5432,
     }
 }
