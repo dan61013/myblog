@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import dotenv
-from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -96,7 +95,7 @@ DATABASES = {
         'NAME': os.environ["NEON_NAME"],
         'USER': os.environ["NEON_USER"],
         'PASSWORD': os.environ["NEON_PASSWORD"],
-        'HOST': os.environ["NEOD_HOST"],
+        'HOST': os.environ["NEON_HOST"],
         'PORT': 5432,
     }
 }
@@ -146,8 +145,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = os.environ['B2_ACCESS_KEY']
 AWS_SECRET_ACCESS_KEY = os.environ['B2_SECRET_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['B2_BUCKET_NAME']
-AWS_S3_ENDPOINT_URL = "https://s3.us-east-005.backblazeb2.com"
-AWS_S3_REGION_NAME = 'us-east-005'
+AWS_S3_ENDPOINT_URL = os.environ["B2_ENDPOINT_URL"]
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_PARAMETERS = {
@@ -161,7 +159,7 @@ MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{MEDIAFILES_LOCATION}/"
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
