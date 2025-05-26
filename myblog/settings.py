@@ -139,28 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
-
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "storages.backends.s3.S3Storage",
-#         "OPTIONS": {
-#             "access_key": os.environ['B2_ACCESS_KEY'],
-#             "secret_key": os.environ['B2_SECRET_KEY'],
-#             "bucket_name": os.environ['B2_BUCKET_NAME'],
-#             "endpoint_url": "https://s3.us-east-005.backblazeb2.com",
-#             "file_overwrite": False,
-#             # "location": "media/",
-#             # "client_config": Config(
-#             #     s3={"use_accelerate_endpoint": False},
-#             #     checksumAlgorithm={"algorithm": ""},
-#             # )
-#         },
-#     },
-#     "staticfiles": {
-#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-#     },
-# }
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Backblaze B2 S3-Compatible Storage settings
 AWS_ACCESS_KEY_ID = os.environ['B2_ACCESS_KEY']
@@ -171,15 +151,24 @@ AWS_S3_REGION_NAME = 'us-east-005'
 AWS_S3_FILE_OVERWRITE = False
 # AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_PARAMETERS = {
-    'ChecksumAlgorithm': None,
+    # 'ChecksumAlgorithm': None,
+    'x-amz-content-sha256': 'UNSIGNED-PAYLOAD'
 }
 
+AWS_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
+
+if AWS_S3_ENDPOINT_URL and AWS_STORAGE_BUCKET_NAME:
+    STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/"
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{MEDIAFILES_LOCATION}/"
+else:
+    STATIC_URL = "/static/"
+    MEDIA_URL = '/media/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'staticfiles')
-STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
