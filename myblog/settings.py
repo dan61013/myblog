@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-import django_heroku
 from pathlib import Path
 import dotenv
+from urllib.parse import urlparse
+from botocore.client import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +35,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = (os.environ['DEBUG_VALUE'] == 'True')
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['myblogapp-ddbd7ca0d391.herokuapp.com']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'now.sh']
 
 # Application definition
 
@@ -88,10 +89,16 @@ WSGI_APPLICATION = "myblog.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
     }
 }
 
@@ -133,16 +140,42 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
+DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#         "OPTIONS": {
+#             "access_key": os.environ['B2_ACCESS_KEY'],
+#             "secret_key": os.environ['B2_SECRET_KEY'],
+#             "bucket_name": os.environ['B2_BUCKET_NAME'],
+#             "endpoint_url": "https://s3.us-east-005.backblazeb2.com",
+#             "file_overwrite": False,
+#             # "location": "media/",
+#             # "client_config": Config(
+#             #     s3={"use_accelerate_endpoint": False},
+#             #     checksumAlgorithm={"algorithm": ""},
+#             # )
+#         },
+#     },
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+#     },
+# }
+
+# Backblaze B2 S3-Compatible Storage settings
+AWS_ACCESS_KEY_ID = os.environ['B2_ACCESS_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['B2_SECRET_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['B2_BUCKET_NAME']
+AWS_S3_ENDPOINT_URL = "https://s3.us-east-005.backblazeb2.com"
+AWS_S3_REGION_NAME = 'us-east-005'
+AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_PARAMETERS = {
+    'ChecksumAlgorithm': None,
 }
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'staticfiles')
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
@@ -177,17 +210,3 @@ SUMMERNOTE_CONFIG = {
         'width': '100%',
     }
 }
-
-# AWS bucket setting
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-
-# 讓不同的user上傳同樣的檔名也不會被over write
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Django-Heroku Setting
-django_heroku.settings(locals())
