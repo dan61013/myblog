@@ -149,7 +149,7 @@ AWS_STORAGE_BUCKET_NAME = os.environ['B2_BUCKET_NAME']
 AWS_S3_ENDPOINT_URL = "https://s3.us-east-005.backblazeb2.com"
 AWS_S3_REGION_NAME = 'us-east-005'
 AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = 'public-read'
+AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_PARAMETERS = {
     # 'ChecksumAlgorithm': None,
     'x-amz-content-sha256': 'UNSIGNED-PAYLOAD'
